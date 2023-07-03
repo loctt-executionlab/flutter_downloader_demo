@@ -1,0 +1,14 @@
+{
+    "markdown.extension.toc.omittedFromToc": {
+        // Use a path relative to your workspace.
+        "README.md": [
+            "# Introduction",
+            "## Also omitted",
+        ],
+        // Or an absolute path for standalone files.
+        "/home/foo/Documents/todo-list.md": [
+          "## Shame list (I'll never do these)",
+        ]
+      }
+      
+}
