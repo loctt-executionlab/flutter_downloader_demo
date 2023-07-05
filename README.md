@@ -8,11 +8,11 @@ Last updated: 28 Jul 2023
 - [Preface](#preface)
   - ["Naive" approcach](#naive-approcach)
   - [Using packages](#using-packages)
-  - [Things to consider](#things-to-consider)
+  - [Storage](#storage)
 - [flutter\_downloader](#flutter_downloader)
   - [Getting started](#getting-started)
-  - [API usage](#api-usage)
-- [Architecture with Riverpod](#architecture-with-riverpod)
+  - [Architecture with Riverpod](#architecture-with-riverpod)
+  - [Known bugs](#known-bugs)
 - [Alternative \[WIP\]](#alternative-wip)
 
 ## TODO <!-- omit from toc -->
@@ -20,8 +20,8 @@ Will delete when done
 
 - [x] Introduction
 - [x] Package introduction
-- [x] Api usage
 - [x] Architecture
+- [ ] Known bug
 - [ ] Alternative
 - [ ] Code demo
 
@@ -63,15 +63,34 @@ dio.download('uri', 'download path', onReceiveProgress: (count, total) {
 
 Vì một trong những requirement thiết yếu khi download với thiết bị di động là chạy background. Với phương pháp trên, nếu code được chạy trên main thread thì sẽ bị dừng ngay khi app bị đưa vào background. Ngay cả khi spawn isolate riêng để chạy download ngầm thì hệ điệu hành mobile sẽ tự động tối ưu gây đóng thread bất kì lúc nào. Để khắc phục thì code sử dụng package `workmanager` cung cấp các api để khởi tạo  background task cho các nền tảng native tương ứng, sau đó implement chức năng download task để chạy ngầm, nói chung là khó, và flutter có nhiều package có sẵn để xử lý download nên không cần phải như thế.
 
-### Things to consider
+### Storage
 
-**Device storage**
+Để lưu file thì trước hết ta cần tìm hiểu về storage system của từng hệ thống.
 
-Dùng package path_provider để gọi APIs của native platform để lấy path storage lúc download. IOS cho phép người dùng truy cập storage thoải mái, còn Android thì một số quyền truy cập storage cần phải được cấp quyền trước. 
+**Android**
 
-Tham khảo thêm về data storage của Android tại [đây](https://developer.android.com/training/data-storage)
+Android có thể chia thành hai loại storage chính là app-specific và shared storage.
+App specific là private của app, còn shared là các app khác có thể truy cập được.
 
+app_provider api:
 
+`getExternalStorageDirectory()`: internal app-specific storage
+`getApplicationSupportDirectory()`: external app-specific storage
+
+Shared storage có phân loại sẵn (Images, Audio, files, ...), có thể dùng package android_path_provider để lấy path cụ thể. 
+
+**IOS**
+
+IOS mặc định thì chỉ cho app truy cập vào directory sandbox của riêng app, cũng không chia thành internal hay external. Ngoài ra iOS có guidline cho các loại file trong các thư mục mặc định của app:
+
+path_provider api:
+`getApplicationDocumentsDirectory()` Lưu user-generated content. Data có thể được truy cập bởi user (mặc định được back up bằng iCloud)
+
+`getLibraryDirectory()` Top level directory chứa file không phải user data, mặc định chứa Application Support và Caches folder. Dùng để chứa data phục vụ cho app mà không cho phép user thấy được (vd: config file, session log, ...)
+
+iOS không bị giới hạn quyền truy cập storage của app.
+
+tham khảo thêm về storage tại đây: [Android](https://developer.android.com/training/data-storage) hoặc [iOS](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html)
 
 ## flutter_downloader
 
@@ -87,27 +106,7 @@ Package  Vì tác vụ download này được thực thi biệt lập qua backgr
 
 Mình sẽ lược qua các bước setup package, vì docs của từng package rất chi tiết rõ ràng.
 
-### API usage
-
-Đầu tiên chạy hàm initialize trước khi `runApp()`
-
-```dart
-import 'package:flutter_downloader/flutter_downloader.dart';
-
-void main() {
-    WidgetsFlutterBinding.ensureInitialized();
-
-    // Plugin must be initialized before using
-    await FlutterDownloader.initialize(
-    debug: true, // optional: set to false to disable printing logs to console (default: true)
-    ignoreSsl: true // option: set to false to disable working with http links (default: false)
-    );
-
-    runApp(/*...*/)
-}
-```
-
-## Architecture with Riverpod
+### Architecture with Riverpod
 
 Download sử dụng flutter_downloader và flutter_riverpod 
 
@@ -307,6 +306,32 @@ class DownloadFileStatusNotifier extends _$DownloadFileStatusNotifier {
     /// ...
 }
 ```
+
+nhiệm vụ của class `DownloadFileStatusNotifier` là sẽ list ra các task đã bắt đầu download, mình có thể thêm phần mapping list này với Object cần download để tracking status real time lúc khởi tạo và trong `_handleTaskStatusUpdate()`, ngoài ra có thể dùng một family provider để lắng nghe sự thay đổi của từng entry download task ở trên:
+
+```dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final taskStatusNotifier =
+    StateProviderFamily<DownloadTaskModel?, String>((ref, url) {
+  return ref.watch<DownloadTaskModel?>(
+    downloadFileStatusNotifierProvider.select(
+      (value) {
+        final index = value.indexWhere((element) => element.url == url);
+        if (index == -1) return null;
+        return value[index];
+      },
+    ),
+  );
+});
+
+```
+
+Với code trên thì UI có thể gọi đến notifier này là nhận được `DownloadTaskModel` tương ứng
+### Known bugs
+
+- App crash khi call remove download khi downloading >> investigating (app example trên github cũng crash)
+- 
 
 ## Alternative [WIP]
 

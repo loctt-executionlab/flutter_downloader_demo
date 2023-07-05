@@ -61,6 +61,7 @@ class FlutterDownloaderListenerNotifier
     IsolateNameServer.lookupPortByName(portName)
         ?.send([id, status, progress]);
   }
+  
 }
 
 class TaskStatus {
