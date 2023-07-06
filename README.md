@@ -1,5 +1,4 @@
 ### Author:  [XuanBach](mailto:bach.vo@executionlab.asia) + [LocTran](mailto:loc.tran@executionlab.asia)
-Last updated: 28 Jul 2023
 
 # BACKGROUND DOWNLOAD IN FLUTTER <!-- omit from toc -->
 
@@ -330,8 +329,8 @@ final taskStatusNotifier =
 Với code trên thì UI có thể gọi đến notifier này là nhận được `DownloadTaskModel` tương ứng
 ### Known bugs
 
-- App crash khi call remove download khi downloading >> investigating (app example trên github cũng crash)
-- 
+- App crash khi call remove download khi downloading trên iOS >> investigating (app example trên github cũng crash)
+- App crash khi cancel download nhiều file trên iOS >> investigating (Bach's)
 
 ## Alternative [WIP]
 

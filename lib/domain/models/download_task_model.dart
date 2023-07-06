@@ -16,10 +16,11 @@ enum DownloadTaskStatus{
 @freezed
 class DownloadTaskModel with _$DownloadTaskModel {
 
-  factory DownloadTaskModel({
+  const factory DownloadTaskModel({
     required String id,
     required String url,
     required String path,
+    required int progress,
     required DownloadTaskStatus status,
   }) = _DownloadTaskModel;
   

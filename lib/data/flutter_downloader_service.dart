@@ -41,6 +41,7 @@ extension DownloadTaskExt on downloader.DownloadTask {
     return DownloadTaskModel(
       id: taskId,
       url: url,
+      progress: progress,
       path: savedDir,
       status: status.toStatus(),
     );

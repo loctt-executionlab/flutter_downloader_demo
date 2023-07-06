@@ -7,7 +7,7 @@ part of 'flutter_downloader_listener_notifier.dart';
 // **************************************************************************
 
 String _$flutterDownloaderListenerNotifierHash() =>
-    r'9fcc0eea84702996e84d7665fdc292cb8670591b';
+    r'b2371a01893c1ff947860ce852c42ff1db622ea5';
 
 /// See also [FlutterDownloaderListenerNotifier].
 @ProviderFor(FlutterDownloaderListenerNotifier)

@@ -23,6 +23,7 @@ mixin _$DownloadTaskModel {
   String get id => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   String get path => throw _privateConstructorUsedError;
+  int get progress => throw _privateConstructorUsedError;
   DownloadTaskStatus get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +38,12 @@ abstract class $DownloadTaskModelCopyWith<$Res> {
           DownloadTaskModel value, $Res Function(DownloadTaskModel) then) =
       _$DownloadTaskModelCopyWithImpl<$Res, DownloadTaskModel>;
   @useResult
-  $Res call({String id, String url, String path, DownloadTaskStatus status});
+  $Res call(
+      {String id,
+      String url,
+      String path,
+      int progress,
+      DownloadTaskStatus status});
 }
 
 /// @nodoc
@@ -56,6 +62,7 @@ class _$DownloadTaskModelCopyWithImpl<$Res, $Val extends DownloadTaskModel>
     Object? id = null,
     Object? url = null,
     Object? path = null,
+    Object? progress = null,
     Object? status = null,
   }) {
     return _then(_value.copyWith(
@@ -71,6 +78,10 @@ class _$DownloadTaskModelCopyWithImpl<$Res, $Val extends DownloadTaskModel>
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
               as String,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as int,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -87,7 +98,12 @@ abstract class _$$_DownloadTaskModelCopyWith<$Res>
       __$$_DownloadTaskModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String url, String path, DownloadTaskStatus status});
+  $Res call(
+      {String id,
+      String url,
+      String path,
+      int progress,
+      DownloadTaskStatus status});
 }
 
 /// @nodoc
@@ -104,6 +120,7 @@ class __$$_DownloadTaskModelCopyWithImpl<$Res>
     Object? id = null,
     Object? url = null,
     Object? path = null,
+    Object? progress = null,
     Object? status = null,
   }) {
     return _then(_$_DownloadTaskModel(
@@ -119,6 +136,10 @@ class __$$_DownloadTaskModelCopyWithImpl<$Res>
           ? _value.path
           : path // ignore: cast_nullable_to_non_nullable
               as String,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as int,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -130,10 +151,11 @@ class __$$_DownloadTaskModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_DownloadTaskModel implements _DownloadTaskModel {
-  _$_DownloadTaskModel(
+  const _$_DownloadTaskModel(
       {required this.id,
       required this.url,
       required this.path,
+      required this.progress,
       required this.status});
 
   factory _$_DownloadTaskModel.fromJson(Map<String, dynamic> json) =>
@@ -146,11 +168,13 @@ class _$_DownloadTaskModel implements _DownloadTaskModel {
   @override
   final String path;
   @override
+  final int progress;
+  @override
   final DownloadTaskStatus status;
 
   @override
   String toString() {
-    return 'DownloadTaskModel(id: $id, url: $url, path: $path, status: $status)';
+    return 'DownloadTaskModel(id: $id, url: $url, path: $path, progress: $progress, status: $status)';
   }
 
   @override
@@ -161,12 +185,14 @@ class _$_DownloadTaskModel implements _DownloadTaskModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.path, path) || other.path == path) &&
+            (identical(other.progress, progress) ||
+                other.progress == progress) &&
             (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, url, path, status);
+  int get hashCode => Object.hash(runtimeType, id, url, path, progress, status);
 
   @JsonKey(ignore: true)
   @override
@@ -184,10 +210,11 @@ class _$_DownloadTaskModel implements _DownloadTaskModel {
 }
 
 abstract class _DownloadTaskModel implements DownloadTaskModel {
-  factory _DownloadTaskModel(
+  const factory _DownloadTaskModel(
       {required final String id,
       required final String url,
       required final String path,
+      required final int progress,
       required final DownloadTaskStatus status}) = _$_DownloadTaskModel;
 
   factory _DownloadTaskModel.fromJson(Map<String, dynamic> json) =
@@ -199,6 +226,8 @@ abstract class _DownloadTaskModel implements DownloadTaskModel {
   String get url;
   @override
   String get path;
+  @override
+  int get progress;
   @override
   DownloadTaskStatus get status;
   @override

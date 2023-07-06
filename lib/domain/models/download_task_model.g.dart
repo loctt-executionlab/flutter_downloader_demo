@@ -11,6 +11,7 @@ _$_DownloadTaskModel _$$_DownloadTaskModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       url: json['url'] as String,
       path: json['path'] as String,
+      progress: json['progress'] as int,
       status: $enumDecode(_$DownloadTaskStatusEnumMap, json['status']),
     );
 
@@ -20,6 +21,7 @@ Map<String, dynamic> _$$_DownloadTaskModelToJson(
       'id': instance.id,
       'url': instance.url,
       'path': instance.path,
+      'progress': instance.progress,
       'status': _$DownloadTaskStatusEnumMap[instance.status]!,
     };
 

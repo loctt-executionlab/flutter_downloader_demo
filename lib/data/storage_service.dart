@@ -1,6 +1,5 @@
 
 import 'dart:io';
-import 'dart:js_interop';
 
 import 'package:path_provider/path_provider.dart';
 
@@ -8,7 +7,7 @@ class StorageService {
 
 
   static Future<String> getStoragePath(String? folderStr) async {
-    final folderPath = folderStr.isNull? '' : '/$folderStr';
+    final folderPath = folderStr == null? '' : '/$folderStr';
     final String documentDir;
     try {
       if(Platform.isAndroid) {

@@ -1,5 +1,7 @@
 import UIKit
 import Flutter
+import flutter_downloader
+
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
